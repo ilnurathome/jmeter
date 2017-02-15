@@ -98,6 +98,10 @@ public class JMSSampler extends AbstractSampler implements ThreadListener {
 
     private static final boolean USE_RES_MSGID_AS_CORRELID_DEFAULT = false; // Default to be applied
 
+    private static final String USE_REPLYTO = "JMSSampler.userReplyTo"; // $NON-NLS-1$
+    
+    private static final boolean USE_REPLYTO_DEFAULT = true;
+    
 
     //--
 
@@ -152,7 +156,7 @@ public class JMSSampler extends AbstractSampler implements ThreadListener {
                 res.setResponseOK();
                 res.setResponseData("Oneway request has no response data", null);
             } else {
-                if (!useTemporyQueue()) {
+                if (!useTemporyQueue() && isUseReplyTo()) {
                     msg.setJMSReplyTo(receiveQueue);
                 }
                 Message replyMsg = executor.sendAndReceive(msg,
@@ -290,6 +294,10 @@ public class JMSSampler extends AbstractSampler implements ThreadListener {
         return getPropertyAsBoolean(USE_RES_MSGID_AS_CORRELID, USE_RES_MSGID_AS_CORRELID_DEFAULT);
     }
 
+    public boolean isUseReplyTo() {
+        return getPropertyAsBoolean(USE_REPLYTO, USE_REPLYTO_DEFAULT);
+    }
+
     public String getInitialContextFactory() {
         return getPropertyAsString(JMSSampler.JNDI_INITIAL_CONTEXT_FACTORY);
     }
@@ -312,6 +320,10 @@ public class JMSSampler extends AbstractSampler implements ThreadListener {
 
     public void setUseResMsgIdAsCorrelId(boolean value) {
         setProperty(USE_RES_MSGID_AS_CORRELID, value, USE_RES_MSGID_AS_CORRELID_DEFAULT);
+    }
+
+    public void setUseReplyTo(boolean value) {
+        setProperty(USE_REPLYTO, value, USE_REPLYTO_DEFAULT);
     }
 
     @Override
