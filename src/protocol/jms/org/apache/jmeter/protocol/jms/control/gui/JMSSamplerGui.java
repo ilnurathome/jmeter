@@ -88,6 +88,8 @@ public class JMSSamplerGui extends AbstractSamplerGui {
     
     private JCheckBox useReplyTo;
 
+    private JCheckBox bodyNull;
+
     public JMSSamplerGui() {
         init();
     }
@@ -133,6 +135,7 @@ public class JMSSamplerGui extends AbstractSamplerGui {
         element.setUseReqMsgIdAsCorrelId(useReqMsgIdAsCorrelId.isSelected());
         element.setUseResMsgIdAsCorrelId(useResMsgIdAsCorrelId.isSelected());
         element.setUseReplyTo(useReplyTo.isSelected());
+        element.setBodyNull(bodyNull.isSelected());
         element.setTimeout(timeout.getText());
         element.setExpiration(expiration.getText());
         element.setPriority(priority.getText());
@@ -183,6 +186,7 @@ public class JMSSamplerGui extends AbstractSamplerGui {
         useReqMsgIdAsCorrelId.setSelected(sampler.isUseReqMsgIdAsCorrelId());
         useResMsgIdAsCorrelId.setSelected(sampler.isUseResMsgIdAsCorrelId());
         useReplyTo.setSelected(sampler.isUseReplyTo());
+        bodyNull.setSelected(sampler.isBodyNull());
 
         timeout.setText(sampler.getTimeout());
         expiration.setText(sampler.getExpiration());
@@ -240,6 +244,7 @@ public class JMSSamplerGui extends AbstractSamplerGui {
         useResMsgIdAsCorrelId = new JCheckBox(JMeterUtils.getResString("jms_use_res_msgid_as_correlid"),false); //$NON-NLS-1$
 
         useReplyTo = new JCheckBox(JMeterUtils.getResString("jms_use_reply_to"),false); //$NON-NLS-1$
+        
 
         correlationPanel.add(useReqMsgIdAsCorrelId);
         correlationPanel.add(useResMsgIdAsCorrelId);
@@ -252,12 +257,14 @@ public class JMSSamplerGui extends AbstractSamplerGui {
         messageNorthPanel.add(onewayPanel, BorderLayout.NORTH);
 
         useNonPersistentDelivery = new JCheckBox(JMeterUtils.getResString("jms_use_non_persistent_delivery"),false); //$NON-NLS-1$
+        bodyNull = new JCheckBox(JMeterUtils.getResString("jms_body_null"),false); //$NON-NLS-1$
 
         JPanel timeoutPanel = new HorizontalPanel();
         timeoutPanel.add(timeout);
         timeoutPanel.add(expiration);
         timeoutPanel.add(priority);
         timeoutPanel.add(useNonPersistentDelivery);
+        timeoutPanel.add(bodyNull);
         messageNorthPanel.add(timeoutPanel, BorderLayout.SOUTH);
 
         messagePanel.add(messageNorthPanel, BorderLayout.NORTH);

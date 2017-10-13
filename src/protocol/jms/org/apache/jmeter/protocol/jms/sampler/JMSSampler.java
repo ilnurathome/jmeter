@@ -102,7 +102,9 @@ public class JMSSampler extends AbstractSampler implements ThreadListener {
     
     private static final boolean USE_REPLYTO_DEFAULT = true;
     
-
+    private static final String BODY_NULL = "JMSSampler.bodyNull"; // $NON-NLS-1$
+    
+    private static final boolean BODY_NULL_DEFAULT = false;
     //--
 
     // Should we use java.naming.security.[principal|credentials] to create the QueueConnection?
@@ -193,7 +195,8 @@ public class JMSSampler extends AbstractSampler implements ThreadListener {
             throw new IllegalStateException("Session may not be null while creating message");
         }
         TextMessage msg = session.createTextMessage();
-        msg.setText(getContent());
+        if (!isBodyNull())
+        	msg.setText(getContent());
         addJMSProperties(msg);
         return msg;
     }
@@ -298,6 +301,10 @@ public class JMSSampler extends AbstractSampler implements ThreadListener {
         return getPropertyAsBoolean(USE_REPLYTO, USE_REPLYTO_DEFAULT);
     }
 
+    public boolean isBodyNull() {
+        return getPropertyAsBoolean(BODY_NULL, BODY_NULL_DEFAULT);
+    }
+
     public String getInitialContextFactory() {
         return getPropertyAsString(JMSSampler.JNDI_INITIAL_CONTEXT_FACTORY);
     }
@@ -324,6 +331,10 @@ public class JMSSampler extends AbstractSampler implements ThreadListener {
 
     public void setUseReplyTo(boolean value) {
         setProperty(USE_REPLYTO, value, USE_REPLYTO_DEFAULT);
+    }
+
+    public void setBodyNull(boolean value) {
+        setProperty(BODY_NULL, value, BODY_NULL_DEFAULT);
     }
 
     @Override
